@@ -33,11 +33,14 @@ add_action( 'post_updated', 'check_values', 10, 3 );
 */
 function so_27971630_product_query( $q ) 
 {
-    $meta_query = $q->get( 'meta_query' );
-    if ( get_option( 'woocommerce_hide_out_of_stock_items' ) == 'no' ) 
+    if(isset($_GET['discount']))
     {
-        $meta_query[] = array( 'key' => '_variation_discount', 'compare' => '>=', 'value' => $_GET['discount'] );
-        $q->set( 'meta_query', $meta_query );
+        $meta_query = $q->get( 'meta_query' );
+        if ( get_option( 'woocommerce_hide_out_of_stock_items' ) == 'no' ) 
+        {
+            $meta_query[] = array( 'key' => '_variation_discount', 'compare' => '>=', 'value' => $_GET['discount'] );
+            $q->set( 'meta_query', $meta_query );
+        }
     }
 }
 add_action( 'woocommerce_product_query', 'so_27971630_product_query' );
